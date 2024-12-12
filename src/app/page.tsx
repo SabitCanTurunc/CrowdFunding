@@ -7,6 +7,7 @@ import Image from "next/image";
  
 import * as React from "react"
 import { useTheme } from "next-themes"
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 
 

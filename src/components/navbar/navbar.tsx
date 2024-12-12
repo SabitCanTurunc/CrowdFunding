@@ -65,10 +65,13 @@ export default function Navbar() {
 
                 {/* Call to Action Buttons */}
                 <div className="flex space-x-4">
-                    <Button size={"lg"} variant="default">
+                    {/* <Button size={"lg"} variant="default">
                         <Wallet />
                         <Link href="/"> Connect</Link>
-                    </Button>
+                        
+                    </Button> */}
+                    <appkit-button />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" size="icon">
