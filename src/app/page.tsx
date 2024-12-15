@@ -2,10 +2,14 @@
  "use client"
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
-import { useGetAllCampaigns } from '@/hooks/use-campaign-operations';
+import { useGetAllCampaigns, useUserCampaigns } from '@/hooks/use-campaign-operations';
+import { useAccount } from 'wagmi';
 
 export default function Home() {
   const { campaigns, error, isLoading, serializeCampaigns } = useGetAllCampaigns();
+    const { isConnected } = useAccount(); 
+  
+
 
   const handleSubmit = () => {
     console.log("Veri çekme işlemi çalışıyor");
@@ -15,6 +19,7 @@ export default function Home() {
   return (
     <div className="flex justify-center items-center h-screen">
       <Button onClick={handleSubmit}>Çalıştır</Button>
+      
 
       {isLoading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}

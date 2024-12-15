@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useReadContract, } from 'wagmi';
 import { crowdfundingFactoryAbi } from '@/abi/crowdfunding-factory-abi';
-import { getAddress } from 'viem';
+import { Address, getAddress } from 'viem';
 import { config } from '@/config/config';
 import { writeContract } from '@wagmi/core'
 
@@ -22,7 +22,7 @@ type campaignProps = {
  durationDays:bigint;
 }
 
-export function useGetAllCampaigns() {
+export function  useGetAllCampaigns() {
   const [campaigns, setCampaigns] = useState<Campaign[] | null>(null);
   const [campaignHashes, setCampaignHashes] = useState<string[] | null>(null);
 
@@ -43,9 +43,11 @@ export function useGetAllCampaigns() {
       setCampaignHashes(hashes);
 
       // Konsola yazdır (isteğe bağlı)
-      console.log("Kampanya Hash Adresleri:", hashes);
     }
   }, [data]);
+
+
+
 
   // Serialize campaigns data, convert BigInt to string
   const serializeCampaigns = (campaigns: Campaign[] | null) => {
@@ -57,6 +59,26 @@ export function useGetAllCampaigns() {
   };
 
   return { campaigns, campaignHashes, error, isLoading, serializeCampaigns };
+}
+
+
+export function useUserCampaigns(address: Address) {
+  const [userCampaigns, setUserCampaigns] = useState<Campaign[] | null>(null);
+  const { data, error, isLoading } = useReadContract({
+    abi: crowdfundingFactoryAbi,
+    address: getAddress(process.env.NEXT_PUBLIC_CONTRACT!),
+    functionName: 'getUserCampaigns',
+    args: [address],
+  });
+
+  useEffect(() => {
+    if (data) {
+      const campaignList = [...data] as Campaign[];  // Ensure the shape of data matches Campaign[]
+      setUserCampaigns(campaignList);
+    }
+  }, [data]);  // Only rerun the effect when `data` changes
+
+  return { userCampaigns, error, isLoading };
 }
 
 

@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Moon, Sun, Wallet } from "lucide-react"
 import { useTheme } from "next-themes";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import Image from "next/image";
 
 
 export default function Navbar() {
@@ -61,13 +64,21 @@ export default function Navbar() {
                 </NavigationMenu>
 
                 {/* Call to Action Buttons */}
-                <div className="flex space-x-4">
+                <div className="flex items-center space-x-4">
                     {/* <Button size={"lg"} variant="default">
                         <Wallet />
                         <Link href="/"> Connect</Link>
                         
                     </Button> */}
                     <appkit-button />
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Image src={"https://github.com/shadcn.png"} width={100} height={100} className="h-8 w-8 rounded-full" alt={""} />
+                        </PopoverTrigger>
+                        <PopoverContent className=" sw-80">
+                            <Button><Link href={"/"}/>My campaigns</Button>
+                        </PopoverContent>
+                    </Popover>
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>

@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 function CreateCAmpaignPage() {
-  const { isConnected } = useAccount(); // Cüzdan bağlantı durumu
+  const { isConnected } = useAccount(); 
   const { toast } = useToast();
 
   // Form State
@@ -40,7 +40,6 @@ function CreateCAmpaignPage() {
     }));
   };
 
-  // Genel Toast Gösterimi
   const showToast = (
     title: string,
     description: React.ReactNode = "",
@@ -49,10 +48,9 @@ function CreateCAmpaignPage() {
     toast({ title, description, variant });
   };
 
-  // Kampanya Oluşturma İşlemi
+  
   const handleCreateCampaign = async () => {
     if (!isConnected) {
-      // Eğer cüzdan bağlı değilse uyarı göster
       showToast(
         "Cüzdan Bağlı Değil",
         "Lütfen cüzdanınızı bağlamak için header'daki butonu kullanın.",
@@ -61,7 +59,6 @@ function CreateCAmpaignPage() {
       return;
     }
 
-    // Gerekli alanların kontrolü
     const { name, description, goal, durationDays } = formData;
     if (!name || !description || !goal || !durationDays) {
       showToast("Eksik Bilgi", "Lütfen tüm alanları doldurun.", "destructive");
