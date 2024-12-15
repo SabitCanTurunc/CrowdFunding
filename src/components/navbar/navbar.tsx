@@ -1,6 +1,6 @@
 'use client';
 
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -51,14 +51,11 @@ export default function Navbar() {
                         </NavigationMenuItem>
 
                         <NavigationMenuItem>
-                            <NavigationMenuTrigger>About</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <NavigationMenuLink>
-                                    <Link href="/about" className="hover:text-gray-300">
-                                        Learn More
-                                    </Link>
+                            <Link href="/create-campaign" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    Create Campaign
                                 </NavigationMenuLink>
-                            </NavigationMenuContent>
+                            </Link>
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>

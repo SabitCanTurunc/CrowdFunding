@@ -24,6 +24,7 @@ type campaignProps = {
 
 export function useGetAllCampaigns() {
   const [campaigns, setCampaigns] = useState<Campaign[] | null>(null);
+  const [campaignHashes, setCampaignHashes] = useState<string[] | null>(null);
 
   const { data, error, isLoading } = useReadContract({
     abi: crowdfundingFactoryAbi,
@@ -33,8 +34,16 @@ export function useGetAllCampaigns() {
 
   useEffect(() => {
     if (data) {
-      // Convert readonly array to mutable array
-      setCampaigns([...data]);
+      // Kampanyaları ayarla
+      const campaignList = [...data] as Campaign[];
+      setCampaigns(campaignList);
+
+      // Kampanyaların hash adreslerini ayıkla ve ayarla
+      const hashes = campaignList.map(campaign => campaign.campaignAddress);
+      setCampaignHashes(hashes);
+
+      // Konsola yazdır (isteğe bağlı)
+      console.log("Kampanya Hash Adresleri:", hashes);
     }
   }, [data]);
 
@@ -47,39 +56,29 @@ export function useGetAllCampaigns() {
     }));
   };
 
-  return { campaigns, error, isLoading, serializeCampaigns };
+  return { campaigns, campaignHashes, error, isLoading, serializeCampaigns };
 }
 
 
-export function useCreateCampaign() {
-  const [isCreating, setIsCreating] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [success, setSuccess] = useState(false);
 
-  const createCampaign = async ({
+ export const createCampaign = async ({
     name,
     description,
     goal,
     durationDays,
   }: campaignProps) => {
-    setIsCreating(true);
-    setError(null);
-    setSuccess(false);
-
+    
     try {
-      await writeContract(config,{
+      const response =await writeContract(config,{
         abi: crowdfundingFactoryAbi,
         address: getAddress(process.env.NEXT_PUBLIC_CONTRACT!),
         functionName: "createCampaign",
         args: [name, description, goal, durationDays],
       });
-      setSuccess(true); // Başarılı olduğunda success true olur
+      return response // Başarılı olduğunda console log'a yazılır
     } catch (err) {
-      setError(err as Error); // Hata durumunda error state'i ayarlanır
-    } finally {
-      setIsCreating(false);
-    }
+      console.error(err)
+    } 
   };
 
-  return { createCampaign, isCreating, error, success };
-}
+ 

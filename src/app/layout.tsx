@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import { config } from "@/config/config";
 import { WagmiProvider } from "wagmi";
 import ContextProvider from "@/contexts/wagmi-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -49,6 +50,7 @@ export default async function RootLayout({
 
               <Navbar></Navbar>
               {children}
+              <Toaster />
             </ContextProvider>
           
         </ThemeProvider>
