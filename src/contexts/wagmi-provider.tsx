@@ -1,11 +1,13 @@
 'use client'
 
+import { wagmiAdapter, projectId } from '@/config'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createAppKit } from '@reown/appkit/react'
-import { mainnet, sepolia } from '@reown/appkit/networks'
-import React, { type ReactNode } from 'react'
+import { mainnet, arbitrum, sepolia } from '@reown/appkit/networks'
+import React from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
-import { projectId, wagmiAdapter } from '@/configs/wagmi'
+import { ReactNode } from 'react';
+import { config } from '@/config/config'
 
 // Set up queryClient
 const queryClient = new QueryClient()
@@ -26,8 +28,8 @@ const metadata = {
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [mainnet, sepolia],
-  defaultNetwork: mainnet,
+  networks: [mainnet, arbitrum, sepolia],
+  defaultNetwork: sepolia,
   metadata: metadata,
   features: {
     analytics: true // Optional - defaults to your Cloud configuration
