@@ -76,7 +76,9 @@ export default function Navbar() {
                             <Image src={"https://github.com/shadcn.png"} width={100} height={100} className="h-8 w-8 rounded-full" alt={""} />
                         </PopoverTrigger>
                         <PopoverContent className=" sw-80">
-                            <Button><Link href={"/"}/>My campaigns</Button>
+                            <Link href={"/my-campaigns"}>
+                                <Button>My campaigns</Button>
+                            </Link>
                         </PopoverContent>
                     </Popover>
 
