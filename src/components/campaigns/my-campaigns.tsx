@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useUserCampaigns } from '@/hooks/use-campaign-operations';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
@@ -15,49 +14,68 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { Progress } from '../ui/progress';
+import React from 'react';
 
 export const MyCampaigns = () => {
   const { address, isConnected } = useAccount(); // Use inside the component
   const { userCampaigns, error, isLoading } = useUserCampaigns(address!);
 
-  const handleUsers = () => {
-    console.log('User campaigns:', userCampaigns);
-  };
+  const [progress, setProgress] = React.useState(0);
 
-
+  React.useEffect(() => {
+    if (isLoading) {
+      const timer = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(timer); 
+            return 100;
+          }
+          return prev + 30; 
+        });
+      }, 500); 
+      return () => clearInterval(timer); 
+    }
+  }, [isLoading]);
 
   if (isLoading) {
-    return <div className="flex h-screen  justify-center items-center"><p>Loading your campaigns...</p></div>;
-
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <div>
+          <p>Loading your campaigns...</p>
+          <Progress value={progress} className="w-[100%]" />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="flex h-screen  justify-center items-center"><p>Error loading campaigns: {error.message}</p></div>;
-
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <p>Error loading campaigns: {error.message}</p>
+      </div>
+    );
   }
 
   if (!userCampaigns || userCampaigns.length === 0) {
-    return <div className="flex h-screen justify-center items-center">
-
-      <p>No campaigns found.</p></div>
-      ;
-
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <p>No campaigns found.</p>
+      </div>
+    );
   }
 
   return (
-    <div className='flex justify-center justify-items-center py-24 '>
-
+    <div className="flex justify-center justify-items-center py-24">
       <div className={cn("grid grid-cols-3 gap-4")}>
         {userCampaigns.slice().reverse().map((campaign, index) => (
           <Card key={index} className="w-full">
             <CardHeader>
               <CardTitle>{campaign.name}</CardTitle>
-              <CardDescription>
-                Campaign Address: {campaign.campaignAddress}
-              </CardDescription>
+              <CardDescription>Campaign Address: {campaign.campaignAddress}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -65,9 +83,7 @@ export const MyCampaigns = () => {
                 <ul className="mt-2 space-y-2">
                   <li className="flex items-center space-x-2">
                     <BellRing />
-                    <span className="text-sm text-muted-foreground">
-                      Owner: {campaign.owner}
-                    </span>
+                    <span className="text-sm text-muted-foreground">Owner: {campaign.owner}</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <BellRing />
@@ -114,15 +130,10 @@ export const MyCampaigns = () => {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-
-
             </CardFooter>
           </Card>
-
         ))}
       </div>
-
     </div>
-
   );
 };

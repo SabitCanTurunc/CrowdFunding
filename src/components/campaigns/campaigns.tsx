@@ -14,6 +14,8 @@ import { useAccount } from "wagmi";
 import { useGetAllCampaigns } from "@/hooks/use-campaign-operations";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
+import { Progress } from "../ui/progress";
+import React from "react";
 
 
 interface Campaign {
@@ -31,9 +33,32 @@ export function Campaigns() {
 
 
 
-    if (isLoading) {
-        return <div className="flex h-screen  justify-center items-center"><p>Loading your campaigns...</p></div>;
+    const [progress, setProgress] = React.useState(0);
 
+    React.useEffect(() => {
+        if (isLoading) {
+            const timer = setInterval(() => {
+                setProgress((prev) => {
+                    if (prev >= 100) {
+                        clearInterval(timer);
+                        return 100;
+                    }
+                    return prev + 30;
+                });
+            }, 500);
+            return () => clearInterval(timer);
+        }
+    }, [isLoading]);
+
+    if (isLoading) {
+        return (
+            <div className="flex h-screen justify-center items-center">
+                <div>
+                    <p>Loading your campaigns...</p>
+                    <Progress value={progress} className="w-[100%]" />
+                </div>
+            </div>
+        );
     }
 
 
