@@ -22,10 +22,10 @@ type campaignProps = {
  durationDays:bigint;
 }
 
-export function  useGetAllCampaigns() {
+// src/hooks/use-campaign-operations.ts
+export function useGetAllCampaigns() {
   const [campaigns, setCampaigns] = useState<Campaign[] | null>(null);
   const [campaignHashes, setCampaignHashes] = useState<string[] | null>(null);
-
   const { data, error, isLoading } = useReadContract({
     abi: crowdfundingFactoryAbi,
     address: getAddress(process.env.NEXT_PUBLIC_CONTRACT!),
@@ -34,20 +34,15 @@ export function  useGetAllCampaigns() {
 
   useEffect(() => {
     if (data) {
-      // Kampanyaları ayarla
       const campaignList = [...data] as Campaign[];
       setCampaigns(campaignList);
 
-      // Kampanyaların hash adreslerini ayıkla ve ayarla
       const hashes = campaignList.map(campaign => campaign.campaignAddress);
       setCampaignHashes(hashes);
-
-      // Konsola yazdır (isteğe bağlı)
+    } else {
+      setCampaigns([]);
     }
   }, [data]);
-
-
-
 
   // Serialize campaigns data, convert BigInt to string
   const serializeCampaigns = (campaigns: Campaign[] | null) => {
@@ -60,6 +55,8 @@ export function  useGetAllCampaigns() {
 
   return { campaigns, campaignHashes, error, isLoading, serializeCampaigns };
 }
+
+
 
 
 export function useUserCampaigns(address: Address) {
@@ -75,12 +72,13 @@ export function useUserCampaigns(address: Address) {
     if (data) {
       const campaignList = [...data] as Campaign[];  // Ensure the shape of data matches Campaign[]
       setUserCampaigns(campaignList);
+    } else {
+      setUserCampaigns([]); // Fallback to an empty array if no data
     }
-  }, [data]);  // Only rerun the effect when `data` changes
+  }, [data]);  
 
   return { userCampaigns, error, isLoading };
 }
-
 
 
  export const createCampaign = async ({
