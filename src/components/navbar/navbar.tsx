@@ -14,6 +14,8 @@ import { useTheme } from "next-themes";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Image from "next/image";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import CreateCampaign from "../campaigns/create-campaign";
 
 
 export default function Navbar() {
@@ -54,11 +56,18 @@ export default function Navbar() {
                         </NavigationMenuItem>
 
                         <NavigationMenuItem>
-                            <Link href="/create-campaign" legacyBehavior passHref>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Create Campaign
-                                </NavigationMenuLink>
-                            </Link>
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button >Create Campaign</Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[425px] shadow-slate-400 shadow-lg">
+                                    <div>
+                                        <CreateCampaign />
+
+                                    </div>
+
+                                </DialogContent>
+                            </Dialog>
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>

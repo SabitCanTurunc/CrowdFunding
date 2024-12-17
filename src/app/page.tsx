@@ -2,7 +2,7 @@
  "use client"
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
-import { useGetAllCampaigns, useUserCampaigns } from '@/hooks/use-campaign-operations';
+import { useGetAllCampaigns, useUserCampaigns } from '@/hooks/use-factory-operations';
 import { useAccount } from 'wagmi';
 import { Campaigns } from '@/components/campaigns/campaigns';
 

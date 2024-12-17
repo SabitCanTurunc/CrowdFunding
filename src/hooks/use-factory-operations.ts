@@ -37,7 +37,7 @@ export const togglePause = async () => {
     throw error; 
   }
 };
-export function usePaused() {
+export function useIsPaused() {
   const [isPaused, setIsPaused] = useState<boolean | null>(null);
   const { data, error, isLoading } = useReadContract({
     abi: crowdfundingFactoryAbi,
@@ -84,6 +84,8 @@ export function useOwner() {
   useEffect(() => {
     if (data) {
       setOwner(data as string); // Set the owner address if data is available
+    }else{
+      return; 
     }
   }, [data]);
 

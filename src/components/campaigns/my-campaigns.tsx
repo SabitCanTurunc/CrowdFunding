@@ -1,6 +1,6 @@
 "use client";
 
-import { useUserCampaigns } from '@/hooks/use-campaign-operations';
+import { useUserCampaigns } from '@/hooks/use-factory-operations';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
 import { BellRing } from 'lucide-react';

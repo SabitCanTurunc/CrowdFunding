@@ -11,7 +11,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { useAccount } from "wagmi";
-import { useGetAllCampaigns } from "@/hooks/use-campaign-operations";
+import { useGetAllCampaigns } from "@/hooks/use-factory-operations";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { Progress } from "../ui/progress";
@@ -77,7 +77,7 @@ export function Campaigns() {
                 {campaigns.slice().reverse().map((campaign, index) => (
                     <Card key={index} className="w-full">
                         <CardHeader>
-                            <CardTitle>{campaign.name}</CardTitle>
+                            <CardTitle className="text-2xl">{campaign.name}</CardTitle>
                             <CardDescription>
                                 Campaign Address: {campaign.campaignAddress}
                             </CardDescription>
@@ -108,6 +108,7 @@ export function Campaigns() {
                             </div>
                         </CardContent>
                         <CardFooter>
+                            <Button>View</Button>
 
                         </CardFooter>
                     </Card>
