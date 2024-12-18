@@ -1,20 +1,23 @@
-"use client"
-import { togglePause,
-    useIsPaused,
-    addTier,
-    removeTier,
-    extendDeadline,
-    fund,
-    refund,
-    withdraw,
-    istContribution,
-    useDescription,
-    useCampaignStatus,
-    useCampaignBalance,
-    useGetTier, } from "@/hooks/use-campaign-operations";
+"use client";
+import { CampaignGoal } from "@/components/campaigns/goal";
+import {
+  togglePause,
+  useIsPaused,
+  addTier,
+  removeTier,
+  extendDeadline,
+  fund,
+  refund,
+  withdraw,
+  istContribution,
+  useDescription,
+  useCampaignStatus,
+  useCampaignBalance,
+  useGetTier,
+  useCampaignGoal,
+} from "@/hooks/use-campaign-operations";
 import React, { useState } from "react";
 import { Address } from "viem";
-
 
 export default function TestPage() {
   const [contractAddress, setContractAddress] = useState<Address>("0xecF93675Ea42Cd57f06c47DC21a2e9dc1a991f50"); // Kontrat adresi
@@ -29,6 +32,7 @@ export default function TestPage() {
   const { status, error: statusError, isLoading: statusLoading } = useCampaignStatus(contractAddress);
   const { balance, error: balanceError, isLoading: balanceLoading } = useCampaignBalance(contractAddress);
   const { tier, error: tierError, isLoading: tierLoading } = useGetTier(contractAddress, tierIndex);
+  const { goalAmount, goalError, goalLoading } = useCampaignGoal(contractAddress);
   const { amount, error: contributionError, isLoading: contributionLoading } = istContribution(contractAddress, backerAddress);
 
   const handleTogglePause = async () => {
@@ -103,6 +107,9 @@ export default function TestPage() {
         <input type="text" value={contractAddress} onChange={(e) => setContractAddress(e.target.value as Address)} />
       </div>
 
+      <h2>Campaign Goal</h2>
+      <CampaignGoal />
+
       <h2>Toggle Pause</h2>
       <button onClick={handleTogglePause} disabled={pausedLoading}>
         Toggle Pause
@@ -158,6 +165,11 @@ export default function TestPage() {
           <p>Backers: {tier.backers.toString()}</p>
         </div>
       )}
+
+      <h2>Campaign Goal</h2>
+      {goalLoading && <p>Loading...</p>}
+      {goalError && <p>Error: {goalError.message}</p>}
+      <p>Goal Amount: {goalAmount !== null ? `${goalAmount} wei` : "Not available"}</p>
     </div>
   );
 }

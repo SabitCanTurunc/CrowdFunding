@@ -16,6 +16,8 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { Progress } from "../ui/progress";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { Address } from "viem";
 
 
 interface Campaign {
@@ -26,6 +28,13 @@ interface Campaign {
 }
 
 export function Campaigns() {
+
+
+    const router =useRouter();
+    const handleRoute=(hash:string)=>{
+        router.push(`/campaigns/${hash}`);
+    }
+
     const { campaigns, isLoading } = useGetAllCampaigns() as {
         campaigns: Campaign[] | null;  // Allow null here
         isLoading: boolean;
@@ -108,7 +117,7 @@ export function Campaigns() {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button>View</Button>
+                        <Button onClick={() => handleRoute(campaign.campaignAddress)}>View</Button>
 
                         </CardFooter>
                     </Card>

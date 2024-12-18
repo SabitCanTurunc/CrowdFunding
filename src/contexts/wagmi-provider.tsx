@@ -8,6 +8,7 @@ import React from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
 import { ReactNode } from 'react';
 import { config } from '@/config/config'
+import { tirbusonChain } from '@/config/tirbusonChain'
 
 // Set up queryClient
 const queryClient = new QueryClient()
@@ -28,7 +29,7 @@ const metadata = {
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [mainnet, arbitrum, sepolia],
+  networks: [mainnet, arbitrum, sepolia,tirbusonChain],
   defaultNetwork: sepolia,
   metadata: metadata,
   features: {

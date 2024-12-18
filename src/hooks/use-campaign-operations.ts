@@ -208,6 +208,24 @@ export function useCampaignBalance(contractAddress: Address) {
   return { balance, error, isLoading };
 }
 
+export function useCampaignGoal(campaignAddress: Address) {
+  const [goalAmount, setGoalAmount] = useState<number | null>(null);
+  const { data: goalData, error: goalError, isLoading: goalLoading } = useReadContract({
+    abi: campaignAbi,
+    address: campaignAddress,
+    functionName: "goal",
+  });
+
+  useEffect(() => {
+    if (goalData !== undefined) {
+      // Convert bigint to number safely
+      setGoalAmount(Number(goalData));
+    }
+  }, [goalData]);
+
+  return { goalAmount, goalError, goalLoading };
+}
+
 export function useGetTier(contractAddress: Address, tierIndex: bigint) {
   const [tier, setTier] = useState<TiersProps | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

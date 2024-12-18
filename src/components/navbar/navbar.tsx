@@ -84,11 +84,7 @@ export default function Navbar() {
 
                 {/* Call to Action Buttons */}
                 <div className="flex items-center space-x-4">
-                    {/* <Button size={"lg"} variant="default">
-                        <Wallet />
-                        <Link href="/"> Connect</Link>
-                        
-                    </Button> */}
+                    
                     <appkit-button />
                     <Popover>
                         <PopoverTrigger asChild>
