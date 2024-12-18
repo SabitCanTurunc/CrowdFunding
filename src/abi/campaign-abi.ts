@@ -1,4 +1,4 @@
-export const crowdfundingAbi=[
+export const campaignAbi=[
 	{
 		"inputs": [
 			{

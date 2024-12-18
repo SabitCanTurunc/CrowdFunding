@@ -1,5 +1,5 @@
 // src/app/page.tsx
- "use client"
+"use client"
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { useGetAllCampaigns, useUserCampaigns } from '@/hooks/use-factory-operations';
@@ -7,20 +7,17 @@ import { useAccount } from 'wagmi';
 import { Campaigns } from '@/components/campaigns/campaigns';
 
 export default function Home() {
-  const { campaigns, error, isLoading, serializeCampaigns } = useGetAllCampaigns();
-    const { isConnected } = useAccount(); 
-  
 
-
-  const handleSubmit = () => {
-    console.log("Veri çekme işlemi çalışıyor");
-    console.log("Campaigns Data:", campaigns![0]);
-  };
 
   return (
-    <div >
-      <Campaigns/>
-      
+    <div className='flex flex-row h-screen  items-center justify-center'>
+      <div className='flex flex-col h-full items-center justify-center'>
+        <p>Landing</p>
+
+
+      </div>
+
+
     </div>
   );
 }

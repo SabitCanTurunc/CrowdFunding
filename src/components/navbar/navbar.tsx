@@ -16,10 +16,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import CreateCampaign from "../campaigns/create-campaign";
+import { useRouter } from "next/navigation";
 
 
 export default function Navbar() {
     const { setTheme } = useTheme()
+    const router = useRouter();
+    const handleCampaignNavigation=()=>{
+        router.push("/campaigns");
+    }
     return (
         <header className="w-full fixed bg-black border border-b-white">
             <div className="container mx-auto flex justify-between items-center py-4 px-6">
@@ -53,6 +58,11 @@ export default function Navbar() {
                                     </Link>
                                 </NavigationMenuLink>
                             </NavigationMenuContent>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <Button onClick={handleCampaignNavigation}>
+                                Campaigns
+                            </Button>
                         </NavigationMenuItem>
 
                         <NavigationMenuItem>
