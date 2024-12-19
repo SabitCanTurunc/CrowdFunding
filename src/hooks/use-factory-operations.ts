@@ -31,10 +31,10 @@ export const togglePause = async () => {
     });
 
     console.log("Transaction sent. Hash:", hash);
-    return hash; 
+    return hash;
   } catch (error) {
     console.error("Transaction failed:", error);
-    throw error; 
+    throw error;
   }
 };
 export function useIsPaused() {
@@ -84,8 +84,8 @@ export function useOwner() {
   useEffect(() => {
     if (data) {
       setOwner(data as string); // Set the owner address if data is available
-    }else{
-      return; 
+    } else {
+      return;
     }
   }, [data]);
 
@@ -94,6 +94,7 @@ export function useOwner() {
 export function useGetAllCampaigns() {
   const [campaigns, setCampaigns] = useState<Campaign[] | null>(null);
   const [campaignHashes, setCampaignHashes] = useState<string[] | null>(null);
+  console.log("sdf");
   const { data, error, isLoading } = useReadContract({
     abi: crowdfundingFactoryAbi,
     address: getAddress(process.env.NEXT_PUBLIC_CONTRACT!),
@@ -101,14 +102,18 @@ export function useGetAllCampaigns() {
   });
 
   useEffect(() => {
-    if (data) {
-      const campaignList = [...data] as Campaign[];
-      setCampaigns(campaignList);
+    try {
+      if (data) {
+        const campaignList = [...data] as Campaign[];
+        setCampaigns(campaignList);
 
-      const hashes = campaignList.map((campaign) => campaign.campaignAddress);
-      setCampaignHashes(hashes);
-    } else {
-      setCampaigns([]); // Default to empty array if no campaigns found
+        const hashes = campaignList.map((campaign) => campaign.campaignAddress);
+        setCampaignHashes(hashes);
+      } else {
+        setCampaigns([]); // Default to empty array if no campaigns found
+      }
+    } catch (err) {
+      console.log(error);
     }
   }, [data]);
 

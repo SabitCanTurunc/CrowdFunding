@@ -192,16 +192,16 @@ export function useCampaignStatus(contractAddress: Address) {
 }
 
 export function useCampaignBalance(contractAddress: Address) {
-  const [balance, setBalance] = useState<number | null>(null);
+  const [balance, setBalance] = useState<bigint | null>(null);
   const { data, error, isLoading } = useReadContract({
     abi: campaignAbi,
     address: contractAddress,
-    functionName: "getCampaignStatus",
+    functionName: "getContractBalance",
   });
 
   useEffect(() => {
     if (data !== undefined) {
-      setBalance(data as number);
+      setBalance(data as bigint);
     }
   }, [data]);
 

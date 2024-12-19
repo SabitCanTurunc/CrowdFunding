@@ -1,5 +1,5 @@
 "use client";
-import { CampaignGoal } from "@/components/campaigns/goal";
+import { CampaignGoalPercent } from "@/components/campaigns/goalPercent";
 import {
   togglePause,
   useIsPaused,
@@ -20,7 +20,7 @@ import React, { useState } from "react";
 import { Address } from "viem";
 
 export default function TestPage() {
-  const [contractAddress, setContractAddress] = useState<Address>("0xecF93675Ea42Cd57f06c47DC21a2e9dc1a991f50"); // Kontrat adresi
+  const [contractAddress, setContractAddress] = useState<Address>("0x5a4346aDb2bdb51Fc6865AaC8F7211D75225d6ed"); // Kontrat adresi
   const [tierName, setTierName] = useState<string>("");
   const [tierAmount, setTierAmount] = useState<bigint>(BigInt(0));
   const [tierIndex, setTierIndex] = useState<bigint>(BigInt(1));
@@ -108,8 +108,7 @@ export default function TestPage() {
       </div>
 
       <h2>Campaign Goal</h2>
-      <CampaignGoal />
-
+      <CampaignGoalPercent campaignAddress={contractAddress} />
       <h2>Toggle Pause</h2>
       <button onClick={handleTogglePause} disabled={pausedLoading}>
         Toggle Pause
@@ -124,7 +123,20 @@ export default function TestPage() {
       <button onClick={handleAddTier}>Add Tier</button>
 
       <h2>Remove Tier</h2>
-      <input type="number" placeholder="Tier Index" value={tierIndex.toString()} onChange={(e) => setTierIndex(BigInt(e.target.value))} />
+      <input
+        type="number"
+        placeholder="Tier Index"
+        min="1"
+        value={tierIndex.toString()}
+        onChange={(e) => {
+          const value = Number(e.target.value);
+          if (!isNaN(value) && value > 0) {
+            setTierIndex(BigInt(value));
+          } else {
+            alert("Please enter a positive number.");
+          }
+        }}
+      />
       <button onClick={handleRemoveTier}>Remove Tier</button>
 
       <h2>Extend Deadline</h2>
@@ -156,14 +168,33 @@ export default function TestPage() {
       <p>Balance: {balance}</p>
 
       <h2>Get Tier</h2>
+      <div>
+        <label>Tier Index:</label>
+        <input
+          type="number"
+          min="1"
+          placeholder="Enter Tier Index (positive number)"
+          value={tierIndex.toString()}
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            if (!isNaN(value) && value > 0) {
+              setTierIndex(BigInt(value));
+            } else {
+              alert("Please enter a positive number.");
+            }
+          }}
+        />
+      </div>
       {tierLoading && <p>Loading...</p>}
       {tierError && <p>Error: {tierError}</p>}
-      {tier && (
+      {tier ? (
         <div>
           <p>Name: {tier.name}</p>
           <p>Amount: {tier.amount.toString()}</p>
           <p>Backers: {tier.backers.toString()}</p>
         </div>
+      ) : (
+        <p>No tier data available.</p>
       )}
 
       <h2>Campaign Goal</h2>

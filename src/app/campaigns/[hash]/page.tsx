@@ -1,8 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
+import { CampaignGoalPercent } from '@/components/campaigns/goalPercent'
+import { hash } from 'crypto'
+import { Address } from "viem";
+
 
 const page = ({ params }: { params: { hash: string } }) => {
+    const campaignHash:Address=params.hash as Address;
     return (
         <div className='flex  h-screen justify-center items-center p-36'>
             <div className='flex flex-col h-full w-8/12 p-5  border border-white rounded-lg'>
@@ -45,7 +50,9 @@ const page = ({ params }: { params: { hash: string } }) => {
 
                     <div className='flex flex-col  items-center justify-between  h-full p-5 w-6/12   '>
                         <div>
-                            goal
+                            <h1>Campaign goal:</h1>
+                                  <CampaignGoalPercent campaignAddress={campaignHash} />
+                            
                         </div>
                         <div>
                             tiers

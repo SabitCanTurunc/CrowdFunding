@@ -10,8 +10,8 @@ export const tirbusonChain = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['http://127.0.0.1:3002/'],
-      webSocket: ['http://127.0.0.1:3002/'],
+      http: ['http://127.0.0.1:8545/'],
+      webSocket: ['http://127.0.0.1:8545/'],
     },
   }
  
