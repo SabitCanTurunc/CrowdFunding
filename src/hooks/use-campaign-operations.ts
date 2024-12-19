@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useReadContract } from "wagmi";
 import { campaignAbi } from "@/abi/campaign-abi";
-import { Address, getAddress } from "viem";
+import { Address } from "viem";
 import { config } from "@/config/config";
 import { writeContract } from "@wagmi/core";
 
@@ -53,14 +53,14 @@ export const addTier = async (
   { name, amount }: tierProps
 ) => {
   try {
-    console.log("burda1")
+    console.log("burda1");
     const response = await writeContract(config, {
       abi: campaignAbi,
       address: address,
       functionName: "addTier",
       args: [name, amount],
     });
-    console.log("burda2")
+    console.log("burda2");
 
     return response;
   } catch (err) {
@@ -210,7 +210,11 @@ export function useCampaignBalance(contractAddress: Address) {
 
 export function useCampaignGoal(campaignAddress: Address) {
   const [goalAmount, setGoalAmount] = useState<number | null>(null);
-  const { data: goalData, error: goalError, isLoading: goalLoading } = useReadContract({
+  const {
+    data: goalData,
+    error: goalError,
+    isLoading: goalLoading,
+  } = useReadContract({
     abi: campaignAbi,
     address: campaignAddress,
     functionName: "goal",
@@ -231,10 +235,10 @@ export function useGetTier(contractAddress: Address, tierIndex: bigint) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { data, error, isLoading } = useReadContract({
-    abi: campaignAbi, // Campaign ABI'niz
-    address: contractAddress, // Contract adresi
-    functionName: "tiers", // Solidity'deki 'tiers' fonksiyonu
-    args: [tierIndex], // Tier indeksini argüman olarak veriyoruz
+    abi: campaignAbi,
+    address: contractAddress,
+    functionName: "tiers",
+    args: [tierIndex],
   });
 
   useEffect(() => {
@@ -253,20 +257,40 @@ export function useGetTier(contractAddress: Address, tierIndex: bigint) {
     }
   }, [data]);
 
- 
   useEffect(() => {
     if (error) {
       setErrorMessage(error.message || "Error fetching tier data.");
     }
   }, [error]);
 
- 
   return {
     tier,
     error: errorMessage,
     isLoading,
   };
 }
+
+export const useCampaignTiers = (contractAddress: Address) => {
+  const [tiers, setTiers] = useState<any[]>([]);
+  const { data, isLoading, error } = useReadContract({
+    address: contractAddress,
+    abi: campaignAbi,
+    functionName: 'getTiers',
+  });
+
+  useEffect(() => {
+    if (data) {
+      // `data`'yı kopyalayarak `setTiers`'e aktarın
+      setTiers([...data]); // Kopyalama işlemi yapılır
+    }
+  }, [data]);
+
+  return {
+    tiers,
+    isLoading,
+    error,
+  };
+};
 
 export function useDeadline(contractAddress: Address) {
   const [deadline, setDeadline] = useState<bigint | null>(null);
@@ -278,7 +302,7 @@ export function useDeadline(contractAddress: Address) {
 
   useEffect(() => {
     if (data !== undefined) {
-      setDeadline(data as bigint); 
+      setDeadline(data as bigint);
     }
   }, [data]);
 
