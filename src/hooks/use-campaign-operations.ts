@@ -267,3 +267,20 @@ export function useGetTier(contractAddress: Address, tierIndex: bigint) {
     isLoading,
   };
 }
+
+export function useDeadline(contractAddress: Address) {
+  const [deadline, setDeadline] = useState<bigint | null>(null);
+  const { data, error, isLoading } = useReadContract({
+    abi: campaignAbi,
+    address: contractAddress,
+    functionName: "deadline",
+  });
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setDeadline(data as bigint); 
+    }
+  }, [data]);
+
+  return { deadline, error, isLoading };
+}
