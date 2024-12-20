@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { CampaignGoalPercent } from '@/components/campaigns/goalPercent';
 import { Address } from "viem";
-import { useDeadline } from '@/hooks/use-campaign-operations';
+import { useDeadline, useDescription, useName } from '@/hooks/use-campaign-operations';
 import Deadline from '@/components/campaigns/deadline';
 import { CampaignTiers } from '@/components/campaigns/campaignTiers';
 
@@ -12,6 +12,10 @@ import { CampaignTiers } from '@/components/campaigns/campaignTiers';
 const Page = ({ params }: { params: { hash: string } }) => {
     const campaignHash: Address = params.hash as Address;
     const { deadline, error, isLoading } = useDeadline(campaignHash);
+    const { name, } = useName(campaignHash);
+    const { description, } = useDescription(campaignHash);
+
+
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -22,8 +26,9 @@ const Page = ({ params }: { params: { hash: string } }) => {
     }
 
     return (
-        <div className='flex h-screen justify-center items-center py-36'>
-            <div className='flex flex-col justify-between items-center h-full w-8/12 p-5 border   border-white rounded-lg'>
+        <div className="min-h-screen flex justify-center items-center py-36 overflow-auto">
+            <div className="flex flex-col justify-between items-center w-8/12 p-5 border border-white rounded-lg">
+
                 <div className='flex flex-row w-full justify-between  px-2'>
                     <p><i>contract address: <em className='text-sm'>{params.hash}</em></i> </p>
                     {deadline != null ? (
@@ -35,22 +40,21 @@ const Page = ({ params }: { params: { hash: string } }) => {
 
                 <div className='flex flex-col justify-between items-center w-full md:flex-row'>
                     <div className='flex flex-col items-center h-full p-5 w-1/2 gap-6'>
-                       
-                            <Image
-                                src={"https://github.com/shadcn.png"}
-                                width={100}
-                                height={100}
-                                className="h-52 w-52 rounded-xl"
-                                alt="Profile Picture"
-                            />
-                      
+
+                        <Image
+                            src={"https://github.com/shadcn.png"}
+                            width={100}
+                            height={100}
+                            className="h-52 w-52 rounded-xl"
+                            alt="Profile Picture"
+                        />
+
                         <div className='flex flex-row items-center justify-between w-full p-5 pr-20'>
-                            <h1 className='text-2xl'>Campaign name</h1>
+                            <p className='text-4xl'>{name}</p>
                             <Button>Active</Button>
                         </div>
 
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa, rem. Rerum quae dolores consequatur voluptatibus est tempore voluptates debitis mollitia.</p>
-
+                        <p className='text-start'>{description}</p>
 
                     </div>
 
@@ -60,7 +64,7 @@ const Page = ({ params }: { params: { hash: string } }) => {
                             <CampaignGoalPercent campaignAddress={campaignHash} />
                         </div>
                         <div>
-                            <CampaignTiers campaignAddress={campaignHash}/>
+                            <CampaignTiers campaignAddress={campaignHash} />
                         </div>
                     </div>
 

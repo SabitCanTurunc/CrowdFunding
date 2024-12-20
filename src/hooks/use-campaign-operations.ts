@@ -277,6 +277,7 @@ export const useCampaignTiers = (contractAddress: Address) => {
     abi: campaignAbi,
     functionName: 'getTiers',
   });
+   
 
   useEffect(() => {
     if (data) {
@@ -308,3 +309,21 @@ export function useDeadline(contractAddress: Address) {
 
   return { deadline, error, isLoading };
 }
+
+export function useName(contractAddress: Address) {
+  const [name, setName] = useState<string | null>(null);
+  const { data, error, isLoading } = useReadContract({
+    abi: campaignAbi,
+    address: contractAddress,
+    functionName: "name",
+  });
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setName(data as string);
+    }
+  }, [data]);
+
+  return { name, error, isLoading };
+}
+

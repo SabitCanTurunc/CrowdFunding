@@ -101,6 +101,8 @@ export function useGetAllCampaigns() {
     functionName: "getAllCampaigns",
   });
 
+ 
+
   useEffect(() => {
     try {
       if (data) {
