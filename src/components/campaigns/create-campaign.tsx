@@ -50,6 +50,10 @@ function CreateCampaign() {
     toast({ title, description, variant });
   };
 
+  if (!isConnected) {
+    
+    return <div className="flex flex-col justify-center items-center h-full ">Please connect your wallet</div>;
+  }
   
   const handleCreateCampaign = async () => {
     if (!isConnected) {
@@ -104,12 +108,12 @@ function CreateCampaign() {
     }
   };
 
-  return (
+  return ( 
     <div className="flex flex-col justify-center items-center h-full ">
       <Card className="w-[350px] border border-none rounded-lg">
         <CardHeader>
-          <CardTitle>Create Project</CardTitle>
-          <CardDescription>Deploy your new project in one-click.</CardDescription>
+          <CardTitle>Create campaign</CardTitle>
+          <CardDescription>Deploy your new campaign in one-click.</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -118,7 +122,7 @@ function CreateCampaign() {
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  placeholder="Name of your project"
+                  placeholder="Name of your campaign"
                   value={formData.name}
                   onChange={handleInputChange}
                 />
@@ -127,7 +131,7 @@ function CreateCampaign() {
                 <Label htmlFor="description">Description</Label>
                 <Input
                   id="description"
-                  placeholder="Description of your project"
+                  placeholder="Description of your campaign"
                   value={formData.description}
                   onChange={handleInputChange}
                 />
@@ -136,7 +140,7 @@ function CreateCampaign() {
                 <Label htmlFor="goal">Goal</Label>
                 <Input
                   id="goal"
-                  placeholder="Goal of your project (e.g., 1000)"
+                  placeholder="Goal of your campaign (e.g., 1000)"
                   type="number"
                   value={formData.goal}
                   onChange={handleInputChange}
@@ -146,7 +150,7 @@ function CreateCampaign() {
                 <Label htmlFor="durationDays">Duration (Days)</Label>
                 <Input
                   id="durationDays"
-                  placeholder="Duration of your project (e.g., 30)"
+                  placeholder="Duration of your campaign (e.g., 30)"
                   type="number"
                   value={formData.durationDays}
                   onChange={handleInputChange}
@@ -155,8 +159,7 @@ function CreateCampaign() {
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button onClick={()=>router.push("/")} variant="outline">Cancel</Button>
+        <CardFooter className="flex  justify-center">
           <Button onClick={handleCreateCampaign}>Kampanya Oluştur</Button>
         </CardFooter>
       </Card>

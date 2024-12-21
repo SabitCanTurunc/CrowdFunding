@@ -1,13 +1,11 @@
 "use client"
-import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import { CampaignGoalPercent } from '@/components/campaigns/goalPercent';
 import { Address } from "viem";
-import { useDeadline, useDescription, useName } from '@/hooks/use-campaign-operations';
+import { useCampaignStatus, useDeadline, useDescription, useName } from '@/hooks/use-campaign-operations';
 import Deadline from '@/components/campaigns/deadline';
-import { CampaignTiers } from '@/components/campaigns/campaignTiers';
 import FundForm from '@/components/campaigns/fund-form';
+import { CampaignStatus } from '@/components/campaigns/campaign-status';
 
 
 const Page = ({ params }: { params: { hash: string } }) => {
@@ -15,6 +13,23 @@ const Page = ({ params }: { params: { hash: string } }) => {
     const { deadline, error, isLoading } = useDeadline(campaignHash);
     const { name, } = useName(campaignHash);
     const { description, } = useDescription(campaignHash);
+    const { status } = useCampaignStatus(campaignHash);
+
+    if (status == 1) {
+        return <div className="min-h-screen flex justify-center items-center py-36 overflow-auto">
+            <Image src="/images/Celebration.gif" alt="" width={500} height={500} />
+        </div>
+    }
+
+
+    if (status == 2) {
+        return <div className="min-h-screen flex justify-center items-center py-36 overflow-auto">
+            <Image src="/images/CampaignFailed.gif" alt="" width={800} height={500} />
+
+        </div>
+
+
+    }
 
 
 
@@ -52,7 +67,7 @@ const Page = ({ params }: { params: { hash: string } }) => {
 
                         <div className='flex flex-row items-center justify-between w-full p-5 pr-20'>
                             <p className='text-4xl'>{name}</p>
-                            <Button>Active</Button>
+                            <CampaignStatus campaignAddress={campaignHash} />
                         </div>
 
                         <p className='text-start'>{description}</p>

@@ -62,6 +62,8 @@ export const CampaignGoalPercent = ({ campaignAddress }: { campaignAddress: Addr
               />
             </svg>
             <span className="absolute text-5xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <p className="flex w-full h-full text-sm items-center justify-center">{balance}/{goalAmount} WEI</p>
+
               {`${currentSkill.percent.toFixed(2)}%`}
               <p className="flex w-full h-full text-sm items-center justify-center">campaign target</p>
 

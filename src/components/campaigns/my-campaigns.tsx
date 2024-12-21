@@ -45,7 +45,7 @@ export const MyCampaigns = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-row h-full w-full justify-center items-center ">
+      <div className="flex flex-col h-full w-full justify-center items-center ">
 
         <div className="flex flex-col h-full justify-center items-center ">
           <p className='text-nowrap'>Loading your campaigns...</p>
@@ -58,7 +58,7 @@ export const MyCampaigns = () => {
 
   if (error) {
     return (
-      <div className="flex flex-row h-full w-full justify-center items-center ">
+      <div className="flex flex-col h-full w-full justify-center items-center ">
         <p>Error loading campaigns: {error.message}</p>
       </div>
     );
@@ -66,7 +66,7 @@ export const MyCampaigns = () => {
 
   if (!userCampaigns || userCampaigns.length === 0) {
     return (
-      <div className="flex flex-row h-full w-full justify-center items-center ">
+      <div className="flex flex-col h-full w-full justify-center items-center ">
         <p>No campaigns found.</p>
       </div>
     );

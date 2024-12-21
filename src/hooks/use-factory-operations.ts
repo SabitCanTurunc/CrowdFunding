@@ -100,6 +100,7 @@ export function useGetAllCampaigns() {
     address: getAddress(process.env.NEXT_PUBLIC_CONTRACT!),
     functionName: "getAllCampaigns",
   });
+  console.log("campaigns",campaigns);
 
  
 
