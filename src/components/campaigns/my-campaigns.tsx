@@ -21,12 +21,26 @@ import { Progress } from '../ui/progress';
 import React from 'react';
 import { Separator } from '../ui/separator';
 import { ScrollArea } from '../ui/scroll-area';
+import { addTier } from '@/hooks/use-campaign-operations';
+import { Address } from 'viem';
+import { string } from 'zod';
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@radix-ui/react-menubar';
+import { MenubarSeparator } from '../ui/menubar';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export const MyCampaigns = () => {
   const { address, isConnected } = useAccount(); // Use inside the component
   const { userCampaigns, error, isLoading } = useUserCampaigns(address!);
 
+
   const [progress, setProgress] = React.useState(0);
+
+  const [tierName, setTierName] = React.useState("");
+  const [tierAmount, setTierAmount] = React.useState(BigInt(""));
+
+  const router = useRouter()
+
 
   React.useEffect(() => {
     if (isLoading) {
@@ -72,13 +86,22 @@ export const MyCampaigns = () => {
     );
   }
 
+  const handleSubmit = (campaignAddress: Address) => {
+    try {
+      const result = addTier(campaignAddress, { tierName, tierAmount })
+    } catch {
+
+    }
+  }
+
   return (
-    <div className="flex flex-col justify-center items-center gap-4">   
-        <div className=" flex flex-col gap-4 w-full items-center">
-          <h1 className="text-2xl font-bold">My Campaigns</h1>
-          <div className="w-3/4 h-1 bg-gradient-to-r via-white/100 from-white/0 to-white/0" />
-        </div>
-        <ScrollArea className="  flex  h-full">
+    <div className="flex flex-col justify-center items-center gap-4">
+      <div className=" flex flex-col gap-4 w-full items-center">
+        <h1 className="text-2xl font-bold">My Campaigns</h1>
+        <div className="w-3/4 h-1 bg-gradient-to-r via-white/100 from-white/0 to-white/0" />
+      </div>
+
+      <ScrollArea className="  flex  h-full">
         <div className={cn("grid grid-cols-1 gap-4")}>
           {userCampaigns.slice().reverse().map((campaign, index) => (
             <Card key={index} className="w-full">
@@ -109,41 +132,137 @@ export const MyCampaigns = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Dialog>
+
+                <Menubar>
+                  <MenubarMenu>
+                    <MenubarTrigger>Edit Campaign</MenubarTrigger>
+                    <MenubarContent>
+                      <MenubarItem>
+
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" onClick={(e) => e.stopPropagation()}>Add Tier</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>Edit campaign</DialogTitle>
+                              <DialogDescription>
+                                Make changes to your profile here. Click save when you're done.
+                              </DialogDescription>
+                            </DialogHeader>
+
+
+                            <div className="grid gap-4 py-4">
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="name" className="text-right">
+                                  Tier
+                                </Label>
+                                <Input
+                                  id="name"
+                                  value={tierName}
+                                  onChange={(e) => setTierName(e.target.value)}
+                                  className="col-span-3"
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="amount" className="text-right">
+                                  Amount (WEI)
+                                </Label>
+                                <Input
+                                  id="amount"
+                                  value={tierAmount.toString()}
+                                  onChange={(e) => {
+                                    try {
+                                      setTierAmount(BigInt(e.target.value));
+                                    } catch {
+                                      setTierAmount(BigInt(0));
+                                    }
+                                  }}
+                                  className="col-span-3"
+                                />
+
+                              </div>
+                            </div>
+
+
+                            <DialogFooter>
+                              <Button type="submit" onClick={() => handleSubmit(campaign.campaignAddress)}>Save changes</Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+
+                      </MenubarItem>
+                      <MenubarSeparator />
+
+                      <MenubarItem>
+                        <Button>
+                          see tiers
+
+                        </Button>
+                      </MenubarItem>
+
+                    </MenubarContent>
+
+                  </MenubarMenu>
+                </Menubar>
+
+                {/* <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline">Edit Campaign</Button>
+                    <Button variant="outline">Add Tier</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                      <DialogTitle>Edit profile</DialogTitle>
+                      <DialogTitle>Edit campaign</DialogTitle>
                       <DialogDescription>
                         Make changes to your profile here. Click save when you're done.
                       </DialogDescription>
                     </DialogHeader>
+
+
                     <div className="grid gap-4 py-4">
                       <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">
-                          Name
+                          Tier
                         </Label>
-                        <Input id="name" value="Pedro Duarte" className="col-span-3" />
+                        <Input
+                          id="name"
+                          value={tierName}
+                          onChange={(e) => setTierName(e.target.value)}
+                          className="col-span-3"
+                        />
                       </div>
                       <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                          Username
+                        <Label htmlFor="amount" className="text-right">
+                          Amount (WEI)
                         </Label>
-                        <Input id="username" value="@peduarte" className="col-span-3" />
+                        <Input
+                          id="amount"
+                          value={tierAmount.toString()}
+                          onChange={(e) => {
+                            try {
+                              setTierAmount(BigInt(e.target.value));
+                            } catch {
+                              setTierAmount(BigInt(0));
+                            }
+                          }}
+                          className="col-span-3"
+                        />
+
                       </div>
                     </div>
+
+
                     <DialogFooter>
-                      <Button type="submit">Save changes</Button>
+                      <Button type="submit" onClick={() => handleSubmit(campaign.campaignAddress)}>Save changes</Button>
                     </DialogFooter>
                   </DialogContent>
-                </Dialog>
+                </Dialog> */}
+
               </CardFooter>
             </Card>
           ))}
-        
-      </div>
+
+        </div>
       </ScrollArea>
     </div>
   );

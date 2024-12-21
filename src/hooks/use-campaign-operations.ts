@@ -6,8 +6,8 @@ import { config } from "@/config/config";
 import { writeContract } from "@wagmi/core";
 
 type tierProps = {
-  name: string;
-  amount: bigint;
+  tierName: string;
+  tierAmount: bigint;
 };
 
 type TiersProps = {
@@ -50,7 +50,7 @@ export function useIsPaused(contractAddress: Address) {
 
 export const addTier = async (
   address: Address,
-  { name, amount }: tierProps
+  { tierName, tierAmount }: tierProps
 ) => {
   try {
     console.log("burda1");
@@ -58,7 +58,7 @@ export const addTier = async (
       abi: campaignAbi,
       address: address,
       functionName: "addTier",
-      args: [name, amount],
+      args: [tierName, tierAmount],
     });
     console.log("burda2");
 
