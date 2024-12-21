@@ -96,14 +96,16 @@ export const extendDeadline = async (address: Address, daysToAdd: bigint) => {
   }
 };
 
-export const fund = async (address: Address, tierIndex: bigint) => {
+export const fund = async (address: Address, tierIndex: bigint,amount:bigint) => {
   try {
     const response = await writeContract(config, {
       abi: campaignAbi,
       address: address,
       functionName: "fund",
       args: [tierIndex],
+      value: amount
     });
+    console.log("response",response);
     return response;
   } catch (err) {
     console.error(err);

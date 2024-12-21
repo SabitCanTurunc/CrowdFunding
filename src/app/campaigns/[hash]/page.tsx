@@ -7,6 +7,7 @@ import { Address } from "viem";
 import { useDeadline, useDescription, useName } from '@/hooks/use-campaign-operations';
 import Deadline from '@/components/campaigns/deadline';
 import { CampaignTiers } from '@/components/campaigns/campaignTiers';
+import FundForm from '@/components/campaigns/fund-form';
 
 
 const Page = ({ params }: { params: { hash: string } }) => {
@@ -64,14 +65,11 @@ const Page = ({ params }: { params: { hash: string } }) => {
                             <CampaignGoalPercent campaignAddress={campaignHash} />
                         </div>
                         <div>
-                            <CampaignTiers campaignAddress={campaignHash} />
+                            <FundForm campaignAddress={campaignHash} />
                         </div>
                     </div>
 
-
-
                 </div>
-                <Button className='w-full'>Fund</Button>
             </div>
         </div>
     );
