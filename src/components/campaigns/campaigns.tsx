@@ -18,6 +18,7 @@ import { Progress } from "../ui/progress";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Address } from "viem";
+import Image from "next/image";
 
 
 interface Campaign {
@@ -82,6 +83,7 @@ export function Campaigns() {
 
     return (
         <div className="flex  py-24 justify-center items-center  ">
+            <Image src={"images"} alt={""}></Image>
             <div className={cn("grid grid-cols-3 gap-4")}>
                 {campaigns.slice().reverse().map((campaign, index) => (
                     <Card key={index} className="w-full">
