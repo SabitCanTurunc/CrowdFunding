@@ -42,8 +42,9 @@ const Page = ({ params }: { params: { hash: string } }) => {
     }
 
     return (
-        <div className="min-h-screen flex justify-center items-center py-36 overflow-auto">
-            <div className="flex flex-col justify-between items-center w-8/12 p-5 border border-white rounded-lg">
+        <div className="min-h-screen  flex justify-center items-center py-36 overflow-auto">
+            <div className="flex flex-col justify-between items-center w-8/12 p-5 backdrop-blur-lg  border border-white rounded-lg">
+            
 
                 <div className='flex flex-row w-full justify-between  px-2'>
                     <p><i>contract address: <em className='text-sm'>{params.hash}</em></i> </p>

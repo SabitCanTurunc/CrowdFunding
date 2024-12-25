@@ -1,5 +1,5 @@
 // src/components/campaigns/campaigns.tsx
-import { BellRing } from "lucide-react";
+import { BellRing, CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +19,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Address } from "viem";
 import Image from "next/image";
+import CampaignStatusUi from "./campaignStatusUi";
 
 
 interface Campaign {
@@ -30,9 +31,8 @@ interface Campaign {
 
 export function Campaigns() {
 
-
-    const router =useRouter();
-    const handleRoute=(hash:string)=>{
+    const router = useRouter();
+    const handleRoute = (hash: string) => {
         router.push(`/campaigns/${hash}`);
     }
 
@@ -40,8 +40,6 @@ export function Campaigns() {
         campaigns: Campaign[] | null;  // Allow null here
         isLoading: boolean;
     };
-
-
 
     const [progress, setProgress] = React.useState(0);
 
@@ -71,22 +69,28 @@ export function Campaigns() {
         );
     }
 
-
-
     if (!campaigns || campaigns.length === 0) {
         return <div className="flex h-screen justify-center items-center">
-
-            <p>No campaigns found.</p></div>
-            ;
-
+            <p>No campaigns found.</p></div>;
     }
 
     return (
-        <div className="flex  py-24 justify-center items-center  ">
-            <Image src={"images"} alt={""}></Image>
-            <div className={cn("grid grid-cols-3 gap-4")}>
+        <div className="flex flex-col  items-center justify-center  ">
+
+            {/* Wrapper for the cards with overflow */}
+            <div className="grid grid-cols-3 gap-4 overflow-y-auto pb-36 max-h-screen z-10">
+
                 {campaigns.slice().reverse().map((campaign, index) => (
-                    <Card key={index} className="w-full">
+                    <Card key={index} className="flex flex-col w-full -z-10">
+                        <div className="relative w-full p-5 md:h-[200px] xl:h-[300px]">
+                            <Image
+                                src="/images/backgroundCampaigns.gif"
+                                alt="Placeholder image"
+                                layout="fill"
+                                objectFit="cover"
+                                className="rounded-t-lg"
+                            />
+                        </div>
                         <CardHeader>
                             <CardTitle className="text-2xl">{campaign.name}</CardTitle>
                             <CardDescription>
@@ -98,29 +102,30 @@ export function Campaigns() {
                                 <p className="text-sm font-medium leading-none">Notifications</p>
                                 <ul className="mt-2 space-y-2">
                                     <li className="flex items-center space-x-2">
-                                        <BellRing />
+                                        <CircleCheck />
                                         <span className="text-sm text-muted-foreground">
                                             Owner: {campaign.owner}
                                         </span>
                                     </li>
                                     <li className="flex items-center space-x-2">
-                                        <BellRing />
+                                        <CircleCheck />
                                         <span className="text-sm text-muted-foreground">
                                             Created At:{" "}
                                             {new Date(
                                                 typeof campaign.creationTime === "string"
                                                     ? Number.parseInt(campaign.creationTime) * 1000
                                                     : Number(campaign.creationTime) * 1000
-                                            ).toLocaleString()
-                                            }
+                                            ).toLocaleString()}
                                         </span>
                                     </li>
                                 </ul>
                             </div>
                         </CardContent>
                         <CardFooter>
-                        <Button onClick={() => handleRoute(campaign.campaignAddress)}>View</Button>
-
+                            <div className="flex flex-row items-center justify-between gap-12">
+                                <Button onClick={() => handleRoute(campaign.campaignAddress)}>View</Button>
+                                <CampaignStatusUi campaignAddress={campaign.campaignAddress as Address}></CampaignStatusUi>
+                            </div>
                         </CardFooter>
                     </Card>
                 ))}

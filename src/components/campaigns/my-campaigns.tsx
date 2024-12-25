@@ -3,9 +3,10 @@
 import { useUserCampaigns } from '@/hooks/use-factory-operations';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
-import { BellRing } from 'lucide-react';
+import { BellRing, CircleCheck } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { Button } from '../ui/button';
+
 import {
   Dialog,
   DialogContent,
@@ -21,7 +22,7 @@ import { Progress } from '../ui/progress';
 import React from 'react';
 import { Separator } from '../ui/separator';
 import { ScrollArea } from '../ui/scroll-area';
-import { addTier, removeTier, useCampaignStatus, useCampaignTiers } from '@/hooks/use-campaign-operations';
+import { addTier, removeTier, useCampaignStatus, useCampaignTiers, withdraw } from '@/hooks/use-campaign-operations';
 import { Address } from 'viem';
 import { string } from 'zod';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@radix-ui/react-menubar';
@@ -30,6 +31,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CampaignTiers } from './campaignTiers';
 import CampaignStatusUi from './campaignStatusUi';
+import { useToast } from '@/hooks/use-toast';
 
 export const MyCampaigns = () => {
   const { address, isConnected } = useAccount(); // Use inside the component
@@ -45,6 +47,7 @@ export const MyCampaigns = () => {
 
 
   const router = useRouter()
+  const { toast } = useToast()
 
 
   React.useEffect(() => {
@@ -94,15 +97,32 @@ export const MyCampaigns = () => {
   const handleSubmit = (campaignAddress: Address) => {
     try {
       const result = addTier(campaignAddress, { tierName, tierAmount })
-    } catch {
-
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err as string,
+      })
     }
   }
 
   const handleDelete = (campaignAddress: Address) => {
     try {
       const result = removeTier(campaignAddress, tierIndex)
-    } catch {
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err as string,
+      })
+    }
+  }
+  const handleWithdraw = (campaignAddress: Address) => {
+    try {
+      const response = withdraw(campaignAddress)
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err as string,
+      })
 
     }
   }
@@ -120,19 +140,19 @@ export const MyCampaigns = () => {
           {userCampaigns.slice().reverse().map((campaign, index) => (
             <Card key={index} className="w-full">
               <CardHeader>
-                <CardTitle>{campaign.name}</CardTitle>
+                <CardTitle className='text-lg'>{campaign.name}</CardTitle>
                 <CardDescription>Campaign Address: {campaign.campaignAddress}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-sm font-medium leading-none">Notifications</p>
+                  <p className="text-md font-medium leading-none">Info</p>
                   <ul className="mt-2 space-y-2">
                     <li className="flex items-center space-x-2">
-                      <BellRing />
+                    <CircleCheck />
                       <span className="text-sm text-muted-foreground">Owner: {campaign.owner}</span>
                     </li>
                     <li className="flex items-center space-x-2">
-                      <BellRing />
+                    <CircleCheck />
                       <span className="text-sm text-muted-foreground">
                         Created At:{" "}
                         {new Date(
@@ -260,6 +280,27 @@ export const MyCampaigns = () => {
                             </DialogContent>
                           </Dialog>
 
+                        </MenubarItem>
+
+                        <MenubarItem>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" onClick={(e) => e.stopPropagation()}>Withdraw</Button>
+                            </DialogTrigger>
+                            <DialogContent onClick={(e) => e.stopPropagation()} className="sm:max-w-[425px]">
+                              <DialogHeader>
+                                <DialogTitle>Withdraw Funds</DialogTitle>
+                                <DialogDescription>
+                                  Click the button to withdraw your funds
+                                </DialogDescription>
+                              </DialogHeader>
+
+
+                              <DialogFooter>
+                                <Button type="submit" onClick={() => handleWithdraw(campaign.campaignAddress)}>Withdraw</Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
                         </MenubarItem>
                       </div>
                     </MenubarContent>

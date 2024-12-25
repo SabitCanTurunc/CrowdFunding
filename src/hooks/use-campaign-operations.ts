@@ -134,6 +134,7 @@ export const withdraw = async (address: Address) => {
     });
     return response;
   } catch (err) {
+    return err
     console.error(err);
   }
 };

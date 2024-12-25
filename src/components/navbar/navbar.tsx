@@ -22,45 +22,30 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
     const { setTheme } = useTheme()
     const router = useRouter();
-    const handleCampaignNavigation=()=>{
+    const handleCampaignNavigation = () => {
         router.push("/campaigns");
     }
     return (
-        <header className="w-full fixed bg-black border border-b-white">
+        <header className="w-full fixed bg-black border border-b-white z-20">
             <div className="container mx-auto flex justify-between items-center py-4 px-6">
                 {/* Logo */}
                 <div className="text-xl font-bold">
                     <Link href="/">
-                        MyApp
+                        <Image
+                            src="/images/logo.png"
+                            alt=""
+                            width={200} // Set the width you prefer
+                            height={50} // Optionally set the height to maintain aspect ratio
+                        />
                     </Link>
                 </div>
 
                 {/* Navigation Menu - Ortalanmış */}
                 <NavigationMenu>
                     <NavigationMenuList className="flex justify-center space-x-4 flex-1">
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger>Features</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <NavigationMenuLink>
-                                    <Link href="/features" >
-                                        All Features
-                                    </Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
 
                         <NavigationMenuItem>
-                            <NavigationMenuTrigger>Pricing</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <NavigationMenuLink>
-                                    <Link href="/pricing" className="hover:text-gray-300">
-                                        View Pricing
-                                    </Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <Button onClick={handleCampaignNavigation}>
+                            <Button variant={"ghost"} onClick={handleCampaignNavigation}>
                                 Campaigns
                             </Button>
                         </NavigationMenuItem>
@@ -68,7 +53,7 @@ export default function Navbar() {
                         <NavigationMenuItem>
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <Button >Create Campaign</Button>
+                                    <Button variant={"ghost"} >Create Campaign</Button>
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-[425px] shadow-slate-400 shadow-lg">
                                     <div>
@@ -84,7 +69,7 @@ export default function Navbar() {
 
                 {/* Call to Action Buttons */}
                 <div className="flex items-center space-x-4">
-                    
+
                     <appkit-button />
                     <Popover>
                         <PopoverTrigger asChild>

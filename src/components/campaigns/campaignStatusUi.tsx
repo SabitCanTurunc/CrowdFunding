@@ -8,9 +8,9 @@ const CampaignStatusUi = ({ campaignAddress }: { campaignAddress: Address }) => 
     const { status } = useCampaignStatus(campaignAddress)
     const { goalAmount, goalError, goalLoading } = useCampaignGoal(campaignAddress);
     const { balance, error, isLoading } = useCampaignBalance(campaignAddress);
-
+ 
     if (status == 1) {
-        return <div className=" w-full flex justify-center items-center overflow-auto">
+        return <div className=" w-full flex justify-center items-center overflow-auto gap-14">
             <p className="flex w-full h-full text-sm items-center justify-center">Target: {balance}/{goalAmount} WEI</p>
 
             <Image src="/images/successPNG.png" alt="" width={120} height={100} />
@@ -19,7 +19,7 @@ const CampaignStatusUi = ({ campaignAddress }: { campaignAddress: Address }) => 
 
 
     if (status == 2) {
-        return <div className="w-full flex justify-center items-center  overflow-auto">
+        return <div className="w-full flex justify-center items-center  overflow-auto gap-14">
             <p className="flex w-full h-full text-sm items-center justify-center">Target: {balance}/{goalAmount} WEI</p>
 
             <Image src="/images/failedPNG.png" alt="" width={100} height={100} />
@@ -29,7 +29,7 @@ const CampaignStatusUi = ({ campaignAddress }: { campaignAddress: Address }) => 
 
     }
     return (
-        <div className="w-full flex justify-center items-center  overflow-auto">
+        <div className="w-full flex justify-center items-center  overflow-auto gap-14">
 
             <p className="flex w-full h-full text-sm items-center justify-center">Target: {balance}/{goalAmount} WEI</p>
 

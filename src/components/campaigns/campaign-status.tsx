@@ -22,7 +22,7 @@ export const CampaignStatus = ({ campaignAddress }: { campaignAddress: Address }
     const statusName = status !== null ? getStatusName(status) : "Loading...";
 
     return (
-        <Button>
+        <Button className='bg-green'>
             {statusName}
         </Button>
     );
