@@ -59,10 +59,10 @@ const Page = ({ params }: { params: { hash: string } }) => {
                     <div className='flex flex-col items-center h-full p-5 w-1/2 gap-6'>
 
                         <Image
-                            src={"https://github.com/shadcn.png"}
-                            width={100}
+                            src={"/images/backgroundCampaigns.gif"}
+                            width={150}
                             height={100}
-                            className="h-52 w-52 rounded-xl"
+                            className="h-64 w-96 rounded-xl"
                             alt="Profile Picture"
                         />
 

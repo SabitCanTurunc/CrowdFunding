@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -9,9 +8,13 @@ const nextConfig: NextConfig = {
         hostname: 'github.com',
         pathname: '/**', // Tüm yolları kabul etmek için
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com', // Cloudinary hostname
+        pathname: '/**', // Cloudinary'nin tüm yollarını kabul etmek için
+      },
     ],
   },
 };
-
 
 export default nextConfig;

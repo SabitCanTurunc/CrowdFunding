@@ -4,7 +4,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <main>
             <Image
-                src="/images/campaignPageBg.png"
+                src="/images/campaignsPageBg.png"
                 alt="background"
                 layout="fill"
                 objectFit="cover"

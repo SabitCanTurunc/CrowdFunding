@@ -32,6 +32,8 @@ import { useRouter } from 'next/navigation';
 import { CampaignTiers } from './campaignTiers';
 import CampaignStatusUi from './campaignStatusUi';
 import { useToast } from '@/hooks/use-toast';
+import { CldUploadButton } from 'next-cloudinary';
+import UploadImageForm from './uploadImageForm';
 
 export const MyCampaigns = () => {
   const { address, isConnected } = useAccount(); // Use inside the component
@@ -48,6 +50,8 @@ export const MyCampaigns = () => {
 
   const router = useRouter()
   const { toast } = useToast()
+
+  
 
 
   React.useEffect(() => {
@@ -128,6 +132,8 @@ export const MyCampaigns = () => {
   }
 
 
+
+
   return (
     <div className="flex flex-col justify-center items-center gap-4">
       <div className=" flex flex-col gap-4 w-full items-center">
@@ -148,11 +154,11 @@ export const MyCampaigns = () => {
                   <p className="text-md font-medium leading-none">Info</p>
                   <ul className="mt-2 space-y-2">
                     <li className="flex items-center space-x-2">
-                    <CircleCheck />
+                      <CircleCheck />
                       <span className="text-sm text-muted-foreground">Owner: {campaign.owner}</span>
                     </li>
                     <li className="flex items-center space-x-2">
-                    <CircleCheck />
+                      <CircleCheck />
                       <span className="text-sm text-muted-foreground">
                         Created At:{" "}
                         {new Date(
@@ -302,6 +308,32 @@ export const MyCampaigns = () => {
                             </DialogContent>
                           </Dialog>
                         </MenubarItem>
+                        <MenubarItem>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" onClick={(e) => e.stopPropagation()}>
+                                Add Image
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}>
+                              <DialogHeader>
+                                <DialogTitle>Add Image</DialogTitle>
+                                <DialogDescription>Customize your campaign with an image.</DialogDescription>
+                              </DialogHeader>
+                              <DialogFooter>
+                              <UploadImageForm campaignAddress={campaign.campaignAddress} />
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+
+                        </MenubarItem>
+
+
+
+
+
+
+
                       </div>
                     </MenubarContent>
 
